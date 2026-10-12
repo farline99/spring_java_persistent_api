@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Телефонный справочник</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main>
+
+    <h1>Телефонный справочник</h1>
+    <p><a class="button" th:href="@{/owners/new}">Добавить владельца</a></p>
+    <form method="get" th:action="@{/}" th:object="${search}">
+        <h2>Поиск владельцев</h2>
+        <div class="grid">
+            <label>Фамилия
+                <input th:field="*{lastName}" maxlength="60" placeholder="Например, Иванов">
+            </label>
+            <label>Город
+                <input th:field="*{city}" maxlength="100" placeholder="Например, Москва">
+            </label>
+            <label>Часть номера телефона
+                <input th:field="*{number}" maxlength="16" placeholder="Например, 00001">
+            </label>
+        </div>
+        <p class="hint">Можно заполнить одно или несколько полей. Условия объединяются по И.</p>
+        <p class="error" th:each="error : ${#fields.allErrors()}" th:text="${error}"></p>
+        <button type="submit">Найти</button>
+        <a th:href="@{/}">Сбросить</a>
+    </form>
+    <h2>Владельцы</h2>
+    <p th:if="${!#fields.hasErrors('search.*')}" th:text="'Найдено: ' + ${#lists.size(owners)}"></p>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Фамилия, имя, отчество</th><th>Адрес</th><th>Телефоны</th><th>Действие</th></tr></thead>
+            <tbody>
+            <tr th:each="owner : ${owners}">
+                <td th:text="${owner.lastName + ' ' + owner.firstName + ' ' + owner.patronymic}"></td>
+                <td th:text="${owner.address.postalCode + ', ' + owner.address.country + ', ' + owner.address.region + ', ' + owner.address.district + ', ' + owner.address.city + ', ' + owner.address.street + ', д. ' + owner.address.house + (#strings.isEmpty(owner.address.apartment) ? '' : ', кв. ' + owner.address.apartment)}"></td>
+                <td><div th:each="phone : ${owner.phones}" th:text="${phone.number}"></div></td>
+                <td><a th:href="@{/owners/{id}(id=${owner.id})}">Информация</a></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(owners)}"><td colspan="4">Записей нет.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

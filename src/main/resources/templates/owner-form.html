@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Телефонный справочник</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main>
+
+    <p><a th:href="@{/}">К справочнику</a></p>
+    <h1>Новый владелец</h1>
+    <p>Заполните данные владельца, его адрес и первый телефон. Отчество и квартиру можно не указывать.</p>
+    <form method="post" th:action="@{/owners}" th:object="${ownerForm}" novalidate>
+        <div class="grid">
+            <label>Фамилия
+                <input th:field="*{lastName}" maxlength="60">
+                <span class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+            </label>
+            <label>Имя
+                <input th:field="*{firstName}" maxlength="60">
+                <span class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+            </label>
+            <label>Отчество (если есть)
+                <input th:field="*{patronymic}" maxlength="60">
+                <span class="error" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></span>
+            </label>
+            <label>Почтовый индекс
+                <input th:field="*{postalCode}" maxlength="12">
+                <span class="error" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></span>
+            </label>
+            <label>Страна
+                <input th:field="*{country}" maxlength="100">
+                <span class="error" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
+            </label>
+            <label>Область или регион
+                <input th:field="*{region}" maxlength="100">
+                <span class="error" th:if="${#fields.hasErrors('region')}" th:errors="*{region}"></span>
+            </label>
+            <label>Район
+                <input th:field="*{district}" maxlength="100">
+                <span class="error" th:if="${#fields.hasErrors('district')}" th:errors="*{district}"></span>
+            </label>
+            <label>Город
+                <input th:field="*{city}" maxlength="100">
+                <span class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+            </label>
+            <label>Улица
+                <input th:field="*{street}" maxlength="100">
+                <span class="error" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+            </label>
+            <label>Дом
+                <input th:field="*{house}" maxlength="20">
+                <span class="error" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></span>
+            </label>
+            <label>Квартира (если есть)
+                <input th:field="*{apartment}" maxlength="20">
+                <span class="error" th:if="${#fields.hasErrors('apartment')}" th:errors="*{apartment}"></span>
+            </label>
+            <label>Номер телефона
+                <input th:field="*{number}" maxlength="16">
+                <span class="error" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
+            </label>
+        </div>
+        <p class="hint">Телефон: от 7 до 15 цифр, можно начать с +. Пробелы и скобки не используются.</p>
+        <button type="submit">Сохранить</button>
+    </form>
+</main>
+</body>
+</html>

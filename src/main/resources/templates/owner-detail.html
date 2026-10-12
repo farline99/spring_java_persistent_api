@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Телефонный справочник</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<main>
+
+    <p><a th:href="@{/}">К справочнику</a></p>
+    <h1 th:text="${owner.lastName + ' ' + owner.firstName + ' ' + owner.patronymic}"></h1>
+    <p class="success" th:if="${message}" th:text="${message}"></p>
+    <h2>Домашний адрес</h2>
+    <dl>
+        <dt>Почтовый индекс</dt><dd th:text="${owner.address.postalCode}"></dd>
+        <dt>Страна</dt><dd th:text="${owner.address.country}"></dd>
+        <dt>Область или регион</dt><dd th:text="${owner.address.region}"></dd>
+        <dt>Район</dt><dd th:text="${owner.address.district}"></dd>
+        <dt>Город</dt><dd th:text="${owner.address.city}"></dd>
+        <dt>Улица</dt><dd th:text="${owner.address.street}"></dd>
+        <dt>Дом</dt><dd th:text="${owner.address.house}"></dd>
+        <dt>Квартира</dt><dd th:text="${#strings.isEmpty(owner.address.apartment) ? 'Не указана' : owner.address.apartment}"></dd>
+    </dl>
+    <h2>Телефоны</h2>
+    <ul><li th:each="phone : ${owner.phones}" th:text="${phone.number}"></li></ul>
+    <form method="post" th:action="@{/owners/{id}/phones(id=${owner.id})}" th:object="${phoneForm}" novalidate>
+        <h2>Добавить телефон</h2>
+        <label>Номер телефона
+            <input th:field="*{number}" maxlength="16" placeholder="+79990000000">
+            <span class="error" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
+        </label>
+        <p class="hint">От 7 до 15 цифр, можно начать с +. Пробелы и скобки не используются.</p>
+        <button type="submit">Добавить номер</button>
+    </form>
+</main>
+</body>
+</html>
